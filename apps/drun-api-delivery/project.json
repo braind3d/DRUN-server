@@ -1,0 +1,52 @@
+{
+  "root": "apps/drun-api-delivery",
+  "sourceRoot": "apps/drun-api-delivery/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/drun-api-delivery",
+        "main": "apps/drun-api-delivery/src/main.ts",
+        "tsConfig": "apps/drun-api-delivery/tsconfig.app.json",
+        "assets": ["apps/drun-api-delivery/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/drun-api-delivery/src/environments/environment.ts",
+              "with": "apps/drun-api-delivery/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "drun-api-delivery:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/drun-api-delivery/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/drun-api-delivery"],
+      "options": {
+        "jestConfig": "apps/drun-api-delivery/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

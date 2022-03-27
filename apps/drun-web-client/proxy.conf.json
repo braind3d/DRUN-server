@@ -1,0 +1,10 @@
+{
+  "/api/iam": {
+    "target": "http://localhost:3331",
+    "secure": false
+  },
+  "/api/order": {
+    "target": "http://localhost:3332",
+    "secure": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "projects": {
+    "drun-api-delivery": "apps/drun-api-delivery",
+    "drun-api-gateway": "apps/drun-api-gateway",
+    "drun-api-iam": "apps/drun-api-iam",
+    "drun-api-order": "apps/drun-api-order",
+    "drun-web-client": "apps/drun-web-client",
+    "drun-web-client-e2e": "apps/drun-web-client-e2e"
+  }
+}

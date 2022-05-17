@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  drun-api-gateway:
+    container_name: drun-api-gateway
+    build:
+      dockerfile: Dockerfile.drun-api-gateway.dev
+    depends_on:
+      - drun-api-iam
+      - drun-api-order
+      - drun-api-delivery
+      - drun-server-rabbitmq
+    volumes:
+      - ./:/app/drun-server/
+    network_mode: host
+
+  drun-api-iam:
+    container_name: drun-api-iam
+    build:
+      dockerfile: Dockerfile.drun-api-iam.dev
+    depends_on:
+      - drun-server-rabbitmq
+      - drun-server-database
+    volumes:
+      - ./:/app/drun-server/
+    network_mode: host
+
+  drun-api-order:
+    container_name: drun-api-order
+    build:
+      dockerfile: Dockerfile.drun-api-order.dev
+    depends_on:
+      - drun-server-rabbitmq
+      - drun-server-database
+    volumes:
+      - ./:/app/drun-server/
+    network_mode: host
+
+  drun-api-delivery:
+    container_name: drun-api-delivery
+    build:
+      dockerfile: Dockerfile.drun-api-delivery.dev
+    depends_on:
+      - drun-server-rabbitmq
+      - drun-server-database
+    volumes:
+      - ./:/app/drun-server/
+    network_mode: host
+
+  drun-web-client:
+    container_name: drun-web-client
+    depends_on:
+      - drun-api-gateway
+    build:
+      dockerfile: Dockerfile.drun-web-client.dev
+    volumes:
+      - ./:/app/drun-server/
+    network_mode: host
+
+  rabbitmq:
+    container_name: drun-server-rabbitmq
+    image: rabbitmq:management
+    logging:
+      driver: none
+    network_mode: host
+    volumes:
+      - /var/lib/rabbitmq
+
+  database:
+    container_name: drun-server-database
+    image: postgres
+    logging:
+      driver: none
+    network_mode: host
+    env_file:
+      - .env.local

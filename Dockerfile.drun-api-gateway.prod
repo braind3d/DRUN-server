@@ -1,0 +1,18 @@
+FROM node:14 as builder
+
+WORKDIR /app/drun-server
+
+COPY ./ ./
+RUN npm install
+RUN npx nx build drun-api-gateway
+
+
+FROM node:14 as runner
+
+WORKDIR /app/drun-api-gateway
+COPY ./package*.json ./
+COPY --from=builder /app/drun-server/dist/apps/drun-api-gateway/ .
+
+RUN npm install --production
+
+CMD [ "node", "main.js" ]

@@ -15,4 +15,6 @@ COPY --from=builder /app/drun-server/dist/apps/drun-api-gateway/ .
 
 RUN npm install --production
 
+EXPOSE 3333
+
 CMD [ "node", "main.js" ]

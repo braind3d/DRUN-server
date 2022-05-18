@@ -4,73 +4,83 @@ services:
   drun-api-gateway:
     container_name: drun-api-gateway
     build:
+      context: .
       dockerfile: Dockerfile.drun-api-gateway.dev
     depends_on:
       - drun-api-iam
       - drun-api-order
       - drun-api-delivery
       - drun-server-rabbitmq
+    ports:
+      - "3333:3333"
     volumes:
       - ./:/app/drun-server/
-    network_mode: host
 
   drun-api-iam:
     container_name: drun-api-iam
     build:
+      context: .
       dockerfile: Dockerfile.drun-api-iam.dev
     depends_on:
       - drun-server-rabbitmq
       - drun-server-database
     volumes:
       - ./:/app/drun-server/
-    network_mode: host
 
   drun-api-order:
     container_name: drun-api-order
     build:
+      context: .
       dockerfile: Dockerfile.drun-api-order.dev
     depends_on:
       - drun-server-rabbitmq
       - drun-server-database
     volumes:
       - ./:/app/drun-server/
-    network_mode: host
 
   drun-api-delivery:
     container_name: drun-api-delivery
     build:
+      context: .
       dockerfile: Dockerfile.drun-api-delivery.dev
     depends_on:
       - drun-server-rabbitmq
       - drun-server-database
     volumes:
       - ./:/app/drun-server/
-    network_mode: host
 
   drun-web-client:
     container_name: drun-web-client
+    build:
+      context: .
+      dockerfile: Dockerfile.drun-web-client.dev
     depends_on:
       - drun-api-gateway
-    build:
-      dockerfile: Dockerfile.drun-web-client.dev
+    ports:
+      - "0.0.0.0:4200:4200"
     volumes:
       - ./:/app/drun-server/
-    network_mode: host
 
-  rabbitmq:
+  drun-server-rabbitmq:
     container_name: drun-server-rabbitmq
     image: rabbitmq:management
     logging:
       driver: none
-    network_mode: host
+    ports:
+      - "5672:5672"
     volumes:
-      - /var/lib/rabbitmq
+      - rabbitmq-data:/var/lib/rabbitmq
 
-  database:
+  drun-server-database:
     container_name: drun-server-database
     image: postgres
-    logging:
-      driver: none
-    network_mode: host
+    ports:
+      - "5432:5432"
+    volumes:
+      - database-data:/var/lib/postgresql/data
     env_file:
       - .env.local
+
+volumes:
+  database-data:
+  rabbitmq-data:

@@ -1,0 +1,52 @@
+{
+  "root": "apps/drun-api-iam",
+  "sourceRoot": "apps/drun-api-iam/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/drun-api-iam",
+        "main": "apps/drun-api-iam/src/main.ts",
+        "tsConfig": "apps/drun-api-iam/tsconfig.app.json",
+        "assets": ["apps/drun-api-iam/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/drun-api-iam/src/environments/environment.ts",
+              "with": "apps/drun-api-iam/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "drun-api-iam:build"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/drun-api-iam/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/drun-api-iam"],
+      "options": {
+        "jestConfig": "apps/drun-api-iam/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

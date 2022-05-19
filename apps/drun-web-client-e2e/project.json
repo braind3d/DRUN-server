@@ -1,0 +1,28 @@
+{
+  "root": "apps/drun-web-client-e2e",
+  "sourceRoot": "apps/drun-web-client-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/drun-web-client-e2e/cypress.json",
+        "devServerTarget": "drun-web-client:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "drun-web-client:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/drun-web-client-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["drun-web-client"]
+}

@@ -1,0 +1,87 @@
+version: '3'
+
+services:
+  drun-api-gateway:
+    container_name: drun-api-gateway
+    build:
+      context: .
+      dockerfile: Dockerfile.drun-api-gateway.dev
+    depends_on:
+      - drun-api-iam
+      - drun-api-order
+      - drun-api-delivery
+      - drun-server-rabbitmq
+    ports:
+      - "3333:3333"
+    volumes:
+      - ./:/app/drun-server/
+
+  drun-api-iam:
+    container_name: drun-api-iam
+    build:
+      context: .
+      dockerfile: Dockerfile.drun-api-iam.dev
+    depends_on:
+      - drun-server-rabbitmq
+      - drun-server-database
+    volumes:
+      - ./:/app/drun-server/
+
+  drun-api-order:
+    container_name: drun-api-order
+    build:
+      context: .
+      dockerfile: Dockerfile.drun-api-order.dev
+    depends_on:
+      - drun-server-rabbitmq
+      - drun-server-database
+    volumes:
+      - ./:/app/drun-server/
+
+  drun-api-delivery:
+    container_name: drun-api-delivery
+    build:
+      context: .
+      dockerfile: Dockerfile.drun-api-delivery.dev
+    depends_on:
+      - drun-server-rabbitmq
+      - drun-server-database
+    volumes:
+      - ./:/app/drun-server/
+
+  drun-web-client:
+    container_name: drun-web-client
+    build:
+      context: .
+      dockerfile: Dockerfile.drun-web-client.dev
+    depends_on:
+      - drun-api-gateway
+    ports:
+      - "0.0.0.0:4200:4200"
+    volumes:
+      - ./:/app/drun-server/
+
+  drun-server-rabbitmq:
+    container_name: drun-server-rabbitmq
+    image: rabbitmq:management
+    logging:
+      driver: none
+    ports:
+      - "5672:5672"
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+  drun-server-database:
+    container_name: drun-server-database
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./config/database-init:/docker-entrypoint-initdb.d
+      - database-data:/var/lib/postgresql/data
+    env_file:
+      - .env.local
+
+volumes:
+  database-data:
+  rabbitmq-data:

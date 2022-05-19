@@ -1,0 +1,16 @@
+FROM node:14 as builder
+
+WORKDIR /app/drun-server
+
+COPY ./ ./
+RUN npm install
+RUN npx nx build drun-web-client
+
+
+FROM nginx:alpine as runner
+
+WORKDIR /app/drun-web-client
+COPY --from=builder /app/drun-server/dist/apps/drun-web-client/ .
+COPY ./config/nginx.drun-web-client.conf /etc/nginx/nginx.conf
+
+EXPOSE 80

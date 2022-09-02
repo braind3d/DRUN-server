@@ -1,5 +1,5 @@
 {
-  "root": "apps/drun-api-delivery",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/drun-api-delivery/src",
   "projectType": "application",
   "targets": {
@@ -30,6 +30,11 @@
       "executor": "@nrwl/node:node",
       "options": {
         "buildTarget": "drun-api-delivery:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "drun-api-delivery:build:production"
+        }
       }
     },
     "lint": {
@@ -43,7 +48,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/drun-api-delivery"],
       "options": {
-        "jestConfig": "apps/drun-api-delivery/jest.config.js",
+        "jestConfig": "apps/drun-api-delivery/jest.config.ts",
         "passWithNoTests": true
       }
     }

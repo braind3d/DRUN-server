@@ -1,102 +1,29 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "root": "apps/drun-web-client",
   "sourceRoot": "apps/drun-web-client/src",
-  "prefix": "drun-server",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:webpack-browser",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/apps/drun-web-client",
-        "index": "apps/drun-web-client/src/index.html",
-        "main": "apps/drun-web-client/src/main.ts",
-        "polyfills": "apps/drun-web-client/src/polyfills.ts",
-        "tsConfig": "apps/drun-web-client/tsconfig.app.json",
-        "assets": [
-          "apps/drun-web-client/src/favicon.ico",
-          "apps/drun-web-client/src/assets"
-        ],
-        "styles": ["apps/drun-web-client/src/styles.css"],
-        "scripts": [],
-        "customWebpackConfig": {
-          "path": "apps/drun-web-client/webpack.config.js"
+      "outputs": ["dist/apps/drun-web-client"],
+      "executor": "@nxtensions/astro:build",
+      "options": {}
+    },
+    "dev": {
+      "executor": "@nxtensions/astro:dev",
+      "options": {}
+    },
+    "preview": {
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "self"
         }
-      },
-      "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "2kb",
-              "maximumError": "4kb"
-            }
-          ],
-          "fileReplacements": [
-            {
-              "replace": "apps/drun-web-client/src/environments/environment.ts",
-              "with": "apps/drun-web-client/src/environments/environment.prod.ts"
-            }
-          ],
-          "outputHashing": "all",
-          "customWebpackConfig": {
-            "path": "apps/drun-web-client/webpack.prod.config.js"
-          }
-        },
-        "development": {
-          "buildOptimizer": false,
-          "optimization": false,
-          "vendorChunk": true,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
-        }
-      },
-      "defaultConfiguration": "production"
+      ],
+      "executor": "@nxtensions/astro:preview",
+      "options": {}
     },
-    "serve": {
-      "executor": "@nrwl/angular:webpack-server",
-      "configurations": {
-        "production": {
-          "browserTarget": "drun-web-client:build:production"
-        },
-        "development": {
-          "browserTarget": "drun-web-client:build:development"
-        }
-      },
-      "defaultConfiguration": "development",
-      "options": {
-        "port": 4200,
-        "publicHost": "http://localhost:4200"
-      }
-    },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "browserTarget": "drun-web-client:build"
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "options": {
-        "lintFilePatterns": [
-          "apps/drun-web-client/src/**/*.ts",
-          "apps/drun-web-client/src/**/*.html"
-        ]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/drun-web-client"],
-      "options": {
-        "jestConfig": "apps/drun-web-client/jest.config.js",
-        "passWithNoTests": true
-      }
+    "check": {
+      "executor": "@nxtensions/astro:check"
     }
   },
   "tags": []

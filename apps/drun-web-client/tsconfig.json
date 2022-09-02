@@ -1,29 +1,16 @@
 {
   "extends": "../../tsconfig.base.json",
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    },
-    {
-      "path": "./tsconfig.editor.json"
-    }
-  ],
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
-  },
-  "angularCompilerOptions": {
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    // Enable top-level await, and other modern ESM features.
+    "target": "ESNext",
+    "module": "ESNext",
+    // Enable node-style module resolution, for things like npm package imports.
+    "moduleResolution": "node",
+    // Enable JSON imports.
+    "resolveJsonModule": true,
+    // Enable stricter transpilation for better output.
+    "isolatedModules": true,
+    // Add type definitions for our Vite runtime.
+    "types": ["vite/client"]
   }
 }
